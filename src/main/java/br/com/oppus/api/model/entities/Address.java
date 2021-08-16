@@ -3,14 +3,14 @@ package br.com.oppus.api.model.entities;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "endereços")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column()
-    private Integer CEP;
+    private String CEP;
 
     @Column()
     private String UF;
@@ -24,22 +24,27 @@ public class Address {
     @Column()
     private String street;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
+    private Schedule schedule;
+
     public Address(){
     }
 
-    public Address(Integer CEP, String UF, String city, String district, String street){
+    public Address(String CEP, String UF, String city, String district, String street){
         this.CEP = CEP;
         this.UF = UF;
         this.city = city;
         this.district = district;
         this.street = street;
+
     }
 
     public Integer getId() {
         return id;
     }
 
-    public Integer getCEP() {
+    public String getCEP() {
         return CEP;
     }
 
@@ -63,7 +68,7 @@ public class Address {
         this.id = id;
     }
 
-    public void setCEP(Integer CEP) {
+    public void setCEP(String CEP) {
         this.CEP = CEP;
     }
 
@@ -81,5 +86,13 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.setSchedule(schedule);
     }
 }

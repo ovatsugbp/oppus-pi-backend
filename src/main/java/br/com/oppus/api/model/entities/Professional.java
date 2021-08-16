@@ -7,25 +7,8 @@ import java.util.List;
 
 
 @Entity
-@Table
-public class Professional {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column
-    private String name;
-
-    @Column
-    private String password;
-
-    @Column
-    private String email;
-
-    @Column
-    private String photoURL;
-
+@Table(name = "profissionais")
+public class Professional extends User{
     @Column
     private final boolean isProfessional = true;
 
@@ -54,56 +37,22 @@ public class Professional {
 
     }
 
-    public Professional(int id, String name, String nameActivity, String email,
-                        String photoURL, String phone, Schedule[] schedule) {
-        this.id = id;
-        this.name = name;
-        this.nameActivity = nameActivity;
-        this.email = email;
+    public Professional(String name, String password,
+                        String email, String photoURL,
+                        String phone, String bio,
+                        double score, String socialMedia,
+                        double priceActivity, String nameActivity
+                        ) {
+        super(name, password, email, photoURL);
         this.phone = phone;
-        this.photoURL = photoURL;
-
-        for (Schedule s: schedule){
-            professionalSchedule.add(s);
-        }
+        this.bio = bio;
+        this.score = score;
+        this.socialMedia = socialMedia;
+        this.priceActivity = priceActivity;
+        this.nameActivity = nameActivity;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhotoURL() {
-        return photoURL;
-    }
-
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
-    }
-
+    @Override
     public boolean isProfessional() {
         return isProfessional;
     }
@@ -163,6 +112,5 @@ public class Professional {
     public void setProfessionalSchedule(List<Schedule> professionalSchedule) {
         this.professionalSchedule = professionalSchedule;
     }
-
 }
 
