@@ -18,7 +18,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/register")
-    public Schedule registerSchedule( Schedule schedule){
+    public Schedule registerSchedule(@RequestBody Schedule schedule){
         scheduleRepository.save(schedule);
         return schedule;
     }

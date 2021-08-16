@@ -15,8 +15,8 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping
-    public ArrayList<User> getUser(){
-        return (ArrayList<User>) userRepository.findAll();
+    public Iterable<User> getUser(){
+        return userRepository.findAll();
     }
 
     @PostMapping("/register")

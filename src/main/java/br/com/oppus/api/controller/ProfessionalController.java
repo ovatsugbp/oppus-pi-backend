@@ -14,13 +14,14 @@ public class ProfessionalController {
     @Autowired
     ProfessionalRepository professionalRepository;
 
-    @GetMapping
-    public ArrayList<Professional> getProfessional(){
-        return (ArrayList<Professional>) professionalRepository.findAll();
-    }
-
     @PostMapping("/register")
     public Professional registerProfessional(@RequestBody Professional professional){
+        professionalRepository.save(professional);
+        return professional;
+    }
+
+    @PutMapping("/update")
+    public Professional updateProfessional(@RequestBody Professional professional){
         professionalRepository.save(professional);
         return professional;
     }
