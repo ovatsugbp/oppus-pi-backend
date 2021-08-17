@@ -18,7 +18,7 @@ public class AddressController {
     }
 
     @PostMapping("/register")
-    public Address registerAddress(Address address){
+    public Address registerAddress(@RequestBody Address address){
         AddressRepository.save(address);
         return address;
 

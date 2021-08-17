@@ -3,14 +3,14 @@ package br.com.oppus.api.model.entities;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "usuarios")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(nullable = false)
@@ -19,22 +19,19 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String photoURL;
 
     @Column(nullable = false)
     private final boolean isProfessional = false;
 
-    public User(int id, String name, String password, String email, String photoURL) {
-        this.id = id;
+    public User(String name, String password, String email, String photoURL) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.photoURL = photoURL;
     }
 
-    @OneToOne
-    User user;
 
     public User() {
 
