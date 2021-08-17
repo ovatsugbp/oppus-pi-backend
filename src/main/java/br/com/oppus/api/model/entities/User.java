@@ -48,7 +48,7 @@ public class User {
         return name;
     }
 
-    public String getPassword() {
+    public java.lang.CharSequence getPassword() {
         return password;
     }
 
