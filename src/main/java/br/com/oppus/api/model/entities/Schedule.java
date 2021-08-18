@@ -1,6 +1,5 @@
 package br.com.oppus.api.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,19 +22,81 @@ public class Schedule {
     @Column
     private Date finishHour;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "schedule")
-    private List<Address> addresses;
+    @Column()
+    private String CEP;
+
+    @Column()
+    private String UF;
+
+    @Column()
+    private String city;
+
+    @Column()
+    private String district;
+
+    @Column()
+    private String street;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Professional professional;
+
 
 
     public Schedule(){
     }
 
-    public Schedule(String availableDay, Date startHour, Date finishHour, List<Address> addresses, Professional professional) {
+    public Schedule(String availableDay, Date startHour,
+                    Date finishHour, String CEP,
+                    String UF, String city,
+                    String district, String street) {
         this.availableDay = availableDay;
         this.startHour = startHour;
         this.finishHour = finishHour;
-        this.setAddresses(addresses);
+        this.CEP = CEP;
+        this.UF = UF;
+        this.city = city;
+        this.district = district;
+        this.street = street;
+    }
+
+    public String getCEP() {
+        return CEP;
+    }
+
+    public void setCEP(String CEP) {
+        this.CEP = CEP;
+    }
+
+    public String getUF() {
+        return UF;
+    }
+
+    public void setUF(String UF) {
+        this.UF = UF;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public int getId() {
@@ -70,12 +131,11 @@ public class Schedule {
         this.finishHour = finishHour;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Professional getProfessional() {
+        return professional;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setProfessional(Professional professional) {
+        this.professional = professional;
     }
-
 }
