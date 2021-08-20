@@ -1,7 +1,5 @@
 package br.com.oppus.api.model.entities;
 
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class Professional extends User{
     @Column
     private String nameActivity;
 
-    @OneToMany
+    @OneToMany(mappedBy = "professional", cascade = CascadeType.ALL)
     public List<Schedule> professionalSchedule;
 
     public Professional() {
@@ -111,6 +109,10 @@ public class Professional extends User{
 
     public void setProfessionalSchedule(List<Schedule> professionalSchedule) {
         this.professionalSchedule = professionalSchedule;
+
+        for (Schedule s: professionalSchedule) {
+            s.setProfessional(this);
+        }
     }
 }
 

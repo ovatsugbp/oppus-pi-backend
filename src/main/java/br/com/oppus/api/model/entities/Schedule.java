@@ -1,6 +1,8 @@
 package br.com.oppus.api.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +39,9 @@ public class Schedule {
     @Column()
     private String street;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "professional_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Professional professional;
 
 
