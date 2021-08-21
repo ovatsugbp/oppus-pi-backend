@@ -4,6 +4,8 @@ import br.com.oppus.api.model.entities.Professional;
 import br.com.oppus.api.model.repositories.ProfessionalRepository;
 import br.com.oppus.api.model.repositories.ScheduleRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@Api(value = "Profissionais")
 @RequestMapping("/api/professionals")
 public class ProfessionalController {
 
@@ -29,6 +32,7 @@ public class ProfessionalController {
         this.scheduleRepository = scheduleRepository;
     }
 
+    @ApiOperation(value = "Insere um profissional no sistema")
     @PostMapping("/register")
     public ResponseEntity<Professional> registerProfessional(@RequestBody Professional professional){
         Professional savedProfessional = professionalRepository.save(professional);
@@ -37,7 +41,7 @@ public class ProfessionalController {
 
         return ResponseEntity.created(location).body(savedProfessional);
     }
-
+    @ApiOperation(value = "Atualiza um profissional do sistema")
     @PutMapping("/update/{id}")
     public ResponseEntity<Professional> updateProfessional(@PathVariable Integer id, @RequestBody Professional professional){
         Optional<Professional> optionalProfessional = professionalRepository.findById(id);
@@ -51,6 +55,7 @@ public class ProfessionalController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Deleta um profissional do sistema")
     @DeleteMapping("/me/{id}")
     public ResponseEntity<Professional> deleteProfessionalData(@PathVariable Integer id){
 
@@ -63,6 +68,7 @@ public class ProfessionalController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Mostra os dados de um profissional específico no sistema")
     @GetMapping("/me/{id}")
     public ResponseEntity<Professional> getMyProfessionalData(@PathVariable Integer id){
         Optional<Professional> optionalProfessional = professionalRepository.findById(id);
@@ -73,19 +79,20 @@ public class ProfessionalController {
         return ResponseEntity.ok(optionalProfessional.get());
     }
 
+    @ApiOperation(value = "Mostra todas os profissionais cadastrados no sistema")
     @GetMapping
     public ResponseEntity<Page<Professional>> getAll(Pageable pageable){
         return ResponseEntity.ok(professionalRepository.findAll(pageable));
     }
 
-    @RequestMapping(value = "/{subName}/{avDay}", method = RequestMethod.GET)
-    public ResponseEntity<Page<Professional>> getByName(@PathVariable String subName,
-                                                        @PathVariable String avDay,
-                                                        Pageable pageable){
-
-        return ResponseEntity.ok(professionalRepository
-                .findAllByNameActivityAndAvailableDay(subName, avDay, pageable));
-    }
+//    @RequestMapping(value = "/{subName}/{avDay}", method = RequestMethod.GET)
+//    public ResponseEntity<Page<Professional>> getByName(@PathVariable String subName,
+//                                                        @PathVariable String avDay,
+//                                                        Pageable pageable){
+//
+//        return ResponseEntity.ok(professionalRepository
+//                .findAllByNameActivityAndAvailableDay(subName, avDay, pageable));
+//    }
 
 
 }

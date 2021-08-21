@@ -4,6 +4,8 @@ import br.com.oppus.api.model.entities.User;
 import br.com.oppus.api.model.repositories.UserRepository;
 
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
+@Api(value = "Usuários")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -26,7 +29,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-
+    @ApiOperation(value = "Insere um usuário no sistema")
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user){
         User savedUser = userRepository.save(user);
@@ -35,7 +38,7 @@ public class UserController {
 
         return ResponseEntity.created(location).body(savedUser);
     }
-
+    @ApiOperation(value = "Atualiza um usuário do sistema")
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user){
         Optional<User> userOptional = userRepository.findById(id);
@@ -48,6 +51,8 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @ApiOperation(value = "Deleta um usuário do sistema")
     @DeleteMapping("/me/{id}")
     public ResponseEntity<User> deleteUserData(@PathVariable Integer id){
         Optional<User> userOptional = userRepository.findById(id);
@@ -59,6 +64,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Mostra os dados de um usuário específico no sistema")
     @GetMapping("/me/{id}")
     public ResponseEntity<User> getMyUserData(@PathVariable Integer id){
         Optional<User> userOptional = userRepository.findById(id);
