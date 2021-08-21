@@ -5,6 +5,8 @@ import br.com.oppus.api.model.entities.Schedule;
 import br.com.oppus.api.model.repositories.ProfessionalRepository;
 import br.com.oppus.api.model.repositories.ScheduleRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
+@Api(value = "Agendas")
 @RequestMapping("/api/schedule")
 public class ScheduleController {
 
@@ -28,6 +31,7 @@ public class ScheduleController {
         this.professionalRepository = professionalRepository;
     }
 
+    @ApiOperation(value = "Insere uma agenda no sistema")
     @PostMapping("/register/{profId}")
     public ResponseEntity<Schedule> createSchedule(@RequestBody Schedule schedule, @PathVariable Integer profId){
         Optional<Professional> optionalProfessional = professionalRepository.findById(profId);
@@ -44,6 +48,7 @@ public class ScheduleController {
         return  ResponseEntity.created(location).body(savedSchedule);
     }
 
+    @ApiOperation(value = "Atualiza uma agenda do sistema")
     @PutMapping("/update/{profId}/{schId}")
     public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule,@PathVariable Integer profId, @PathVariable Integer schId){
 
@@ -59,7 +64,7 @@ public class ScheduleController {
 
         return ResponseEntity.noContent().build();
     }
-
+    @ApiOperation(value = "Mostra todas as agendas cadastradas no sistema")
     @GetMapping
     public ResponseEntity<Page<Schedule>> getAll (Pageable pageable){
         return ResponseEntity.ok(scheduleRepository.findAll(pageable));
@@ -72,7 +77,7 @@ public class ScheduleController {
     }
 
 
-
+    @ApiOperation(value = "Deleta uma agenda do sistema")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Schedule> deleteSchedule(@PathVariable Integer id){
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(id);
