@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -76,5 +77,15 @@ public class ProfessionalController {
     public ResponseEntity<Page<Professional>> getAll(Pageable pageable){
         return ResponseEntity.ok(professionalRepository.findAll(pageable));
     }
+
+    @RequestMapping(value = "/{subName}/{avDay}", method = RequestMethod.GET)
+    public ResponseEntity<Page<Professional>> getByName(@PathVariable String subName,
+                                                        @PathVariable String avDay,
+                                                        Pageable pageable){
+
+        return ResponseEntity.ok(professionalRepository
+                .findAllByNameActivityAndAvailableDay(subName, avDay, pageable));
+    }
+
 
 }

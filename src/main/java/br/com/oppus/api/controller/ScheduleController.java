@@ -65,6 +65,14 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleRepository.findAll(pageable));
     }
 
+    @GetMapping("/search/{subName}")
+    public ResponseEntity<Page<Schedule>> searchByProfessionalName (@PathVariable String subName, Pageable pageable){
+        return ResponseEntity
+                .ok(scheduleRepository.findAllByProfessionalNameContaining(subName, pageable));
+    }
+
+
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Schedule> deleteSchedule(@PathVariable Integer id){
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(id);

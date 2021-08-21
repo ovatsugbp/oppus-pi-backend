@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
+
+    Page<Schedule> findAllByProfessionalNameContaining(String subName, Pageable pageable);
 }
