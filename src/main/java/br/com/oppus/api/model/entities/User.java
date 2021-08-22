@@ -1,8 +1,12 @@
 package br.com.oppus.api.model.entities;
 
 import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Entity
+@Data
+@AllArgsConstructor
 @Table(name = "usuarios")
 public class User {
 
@@ -16,7 +20,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String email;
 
     @Column

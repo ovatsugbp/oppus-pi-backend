@@ -7,13 +7,13 @@ import br.com.oppus.api.model.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,15 +22,18 @@ public class ProfessionalController {
 
     private final ProfessionalRepository professionalRepository;
     private final ScheduleRepository scheduleRepository;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public ProfessionalController(ProfessionalRepository professionalRepository, ScheduleRepository scheduleRepository){
+    public ProfessionalController(ProfessionalRepository professionalRepository, ScheduleRepository scheduleRepository, PasswordEncoder encoder){
         this.professionalRepository = professionalRepository;
         this.scheduleRepository = scheduleRepository;
+        this.encoder = encoder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<Professional> registerProfessional(@RequestBody Professional professional){
+        professional.setPassword(encoder.encode(professional.getPassword()));
         Professional savedProfessional = professionalRepository.save(professional);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedProfessional.getId()).toUri();
@@ -45,6 +48,7 @@ public class ProfessionalController {
             return ResponseEntity.unprocessableEntity().build();
         }
 
+        professional.setPassword(encoder.encode(professional.getPassword()));
         professional.setId(optionalProfessional.get().getId());
         professionalRepository.save(professional);
 
@@ -78,6 +82,19 @@ public class ProfessionalController {
         return ResponseEntity.ok(professionalRepository.findAll(pageable));
     }
 
+    @PostMapping("/validatePassword")
+    public ResponseEntity<Boolean> validatePassword(@RequestParam String email, @RequestParam String password){
 
+        Optional<Professional> professionalOptional = professionalRepository.findByEmail(email);
+        if (professionalOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
+        boolean valid = encoder.matches(password, professionalOptional.get().getPassword());
+
+        HttpStatus status = valid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+        return ResponseEntity.status(status).body(valid);
+    }
 
 }
