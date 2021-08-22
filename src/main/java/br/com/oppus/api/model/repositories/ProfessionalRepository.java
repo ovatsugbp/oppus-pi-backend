@@ -9,5 +9,4 @@ import java.util.Optional;
 
 public interface ProfessionalRepository extends JpaRepository<Professional, Integer> {
 
-    Page<Professional> findAllByNameActivityAndAvailableDay(String subName, String avDay, Pageable pageable);
 }

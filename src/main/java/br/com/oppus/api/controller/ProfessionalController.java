@@ -78,14 +78,6 @@ public class ProfessionalController {
         return ResponseEntity.ok(professionalRepository.findAll(pageable));
     }
 
-    @RequestMapping(value = "/{subName}/{avDay}", method = RequestMethod.GET)
-    public ResponseEntity<Page<Professional>> getByName(@PathVariable String subName,
-                                                        @PathVariable String avDay,
-                                                        Pageable pageable){
-
-        return ResponseEntity.ok(professionalRepository
-                .findAllByNameActivityAndAvailableDay(subName, avDay, pageable));
-    }
 
 
 }
