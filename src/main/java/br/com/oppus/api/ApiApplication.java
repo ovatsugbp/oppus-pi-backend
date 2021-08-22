@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class ApiApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
@@ -23,18 +23,6 @@ public class ApiApplication extends SpringBootServletInitializer {
 		return builder.sources(ApiApplication.class);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer(){
-		return  new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedMethods("GET","POST","PUT","DELETE","PATCH")
-						.allowedHeaders("*")
-						.allowedOrigins("http://localhost:3000");
-			}
-		};
-	}
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder(){
