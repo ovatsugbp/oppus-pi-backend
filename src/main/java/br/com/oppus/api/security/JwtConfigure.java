@@ -13,6 +13,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @EnableWebSecurity
 public class JwtConfigure extends WebSecurityConfigurerAdapter {
 
@@ -31,7 +34,7 @@ public class JwtConfigure extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user/validatePassword").permitAll()
                 .anyRequest().authenticated()
@@ -42,11 +45,15 @@ public class JwtConfigure extends WebSecurityConfigurerAdapter {
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration conf  = new CorsConfiguration().applyPermitDefaultValues();
+        conf.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+        conf.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        conf.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        conf.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+        conf.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        source.registerCorsConfiguration("**", corsConfiguration);
-
+        source.registerCorsConfiguration("/**", conf);
         return source;
     }
 }
